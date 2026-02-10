@@ -77,11 +77,51 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
     }
   }
 }
+
+Alternatively, use the FastMCP CLI:
+
+```json
+{
+  "mcpServers": {
+    "ebay": {
+      "command": "fastmcp",
+      "args": ["run", "path/to/ebay_mcp/server.py:mcp"],
+      "env": {
+        "EBAY_APP_ID": "your-app-id",
+        "EBAY_CERT_ID": "your-cert-id",
+        "EBAY_DEV_ID": "your-dev-id"
+      }
+    }
+  }
+}
 ```
 
 ### With OpenClaw
 
 Coming soon - will integrate with OpenClaw's MCP client capabilities.
+
+### HTTP Server (Remote Access)
+
+Run as an HTTP server for remote access:
+
+```bash
+python -m ebay_mcp
+# Or with FastMCP CLI:
+fastmcp run src/ebay_mcp/server.py:mcp --transport http --port 8000
+```
+
+Then connect from any MCP client:
+
+```python
+from fastmcp import Client
+
+async with Client("http://localhost:8000/mcp") as client:
+    result = await client.call_tool("search_ebay", {
+        "keywords": "Dell PowerEdge R720",
+        "max_price": 500
+    })
+    print(result)
+```
 
 ## eBay API Access
 
@@ -109,7 +149,36 @@ Example cron job for daily homelab equipment searches:
 
 ## Architecture
 
-Built using the [Model Context Protocol SDK](https://github.com/modelcontextprotocol/python-sdk) for seamless integration with MCP-compatible AI assistants.
+Built using [FastMCP](https://gofastmcp.com) - the fast, Pythonic way to build MCP servers. FastMCP powers 70% of MCP servers and makes it easy to create production-ready integrations with minimal boilerplate.
+
+### Example: Adding a Tool
+
+Adding new tools is as simple as decorating a function:
+
+```python
+from fastmcp import FastMCP
+
+mcp = FastMCP("eBay MCP Server")
+
+@mcp.tool
+def search_ebay(
+    keywords: str,
+    max_price: float = None,
+    condition: str = "New"
+) -> dict:
+    """Search eBay listings with filters"""
+    # Implementation here
+    return {...}
+
+if __name__ == "__main__":
+    mcp.run()  # Supports stdio and HTTP transports
+```
+
+FastMCP automatically:
+- Generates JSON schemas from type hints
+- Validates inputs with Pydantic
+- Handles MCP protocol serialization
+- Provides both stdio and HTTP transports
 
 ## License
 

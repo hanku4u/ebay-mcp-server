@@ -1,7 +1,6 @@
 """Entry point for running the eBay MCP server as a module."""
 
-import asyncio
-from .server import main
+from .server import mcp
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    mcp.run()
