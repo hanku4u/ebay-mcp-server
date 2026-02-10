@@ -4,15 +4,25 @@ A Model Context Protocol (MCP) server for interacting with eBay's APIs. Enables 
 
 ## Features
 
-- 🔍 **Search eBay listings** - Search by keywords, category, price range, condition
-- 💰 **Price tracking** - Monitor item prices over time
-- 📊 **Deal detection** - Find items below typical market price
+### ✅ Implemented (8 tools)
+- 🔍 **Search eBay listings** - Basic and advanced search with all filters
+- 💰 **Price tracking** - SQLite database tracks prices over time
+- 📊 **Deal detection** - Analyzes market data to find bargains (15%+ below average)
+- 📦 **Item details** - Comprehensive info including seller reputation
+- 📈 **Price history** - View trends with statistics (min/max/avg/median)
+- 📋 **Watchlist** - Track multiple items with custom alerts
+
+### 🚧 Planned (12 tools)
 - 🏷️ **Category browsing** - Navigate eBay's category hierarchy
-- 📦 **Item details** - Get comprehensive item information
+- 🆕 **New listings** - Fresh deals (last 6-24 hours)
+- ⏰ **Ending soon** - Auction sniper helper
+- 📊 **Market value** - Price research tool
 
 ## Status
 
-🚧 **Work in Progress** - Initial development phase
+🟢 **MVP Complete** - 8 core tools implemented and ready for testing!
+
+See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for detailed progress.
 
 ## Planned Tools
 
@@ -28,16 +38,31 @@ A Model Context Protocol (MCP) server for interacting with eBay's APIs. Enables 
 - eBay Developer Account (for API credentials)
 - MCP-compatible client (Claude Desktop, Cline, etc.)
 
-## Installation
+## Quick Start
 
-```bash
-# Clone the repository
-git clone https://github.com/hanku4u/ebay-mcp-server.git
-cd ebay-mcp-server
+1. **Get eBay API Credentials**
+   - Sign up at https://developer.ebay.com/
+   - Create an application
+   - Copy your App ID
 
-# Install dependencies
-pip install -e .
-```
+2. **Install**
+   ```bash
+   git clone https://github.com/hanku4u/ebay-mcp-server.git
+   cd ebay-mcp-server
+   pip install -e .
+   ```
+
+3. **Configure**
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your EBAY_APP_ID
+   ```
+
+4. **Test**
+   ```bash
+   python -m ebay_mcp
+   # Server will start in stdio mode (MCP standard)
+   ```
 
 ## Configuration
 
